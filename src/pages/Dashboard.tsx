@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CreditCard, ArrowRightLeft, Clock, PieChart, Users, Receipt, FileText, Search } from 'lucide-react';
+import { CreditCard, ArrowRightLeft, Clock,  Users, Receipt, Search } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 
 export function Dashboard() {
@@ -20,7 +20,6 @@ export function Dashboard() {
     { id: 3, description: 'Electric Bill', amount: -145.30, date: '2024-03-07' }
   ];
 
-  // Mock data for admin tables
   const mockUsers = [
     { id: 1, name: 'John Doe', email: 'john@example.com', accountType: 'Personal', status: 'Active', lastLogin: '2024-03-10 14:30' },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', accountType: 'Business', status: 'Active', lastLogin: '2024-03-10 12:15' },
@@ -57,7 +56,7 @@ export function Dashboard() {
       <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-6" onClick={()=> navigate("/admin/users")} >
           <div className="flex items-center space-x-3 mb-4">
             <Users className="h-6 w-6 text-blue-600" />
             <h3 className="text-lg font-semibold">Total Users</h3>
@@ -65,7 +64,7 @@ export function Dashboard() {
           <p className="text-2xl font-bold">1,234</p>
         </div>
         
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-6" onClick={()=> navigate("/admin/accounts")}>
           <div className="flex items-center space-x-3 mb-4">
             <CreditCard className="h-6 w-6 text-blue-600" />
             <h3 className="text-lg font-semibold">Active Accounts</h3>
@@ -73,7 +72,7 @@ export function Dashboard() {
           <p className="text-2xl font-bold">3,456</p>
         </div>
         
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-6" onClick={()=> navigate("/admin/transactions")}>
           <div className="flex items-center space-x-3 mb-4">
             <ArrowRightLeft className="h-6 w-6 text-blue-600" />
             <h3 className="text-lg font-semibold">Daily Transactions</h3>

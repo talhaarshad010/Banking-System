@@ -40,7 +40,6 @@ export function Profile() {
         </div>
 
         <div className="p-6 space-y-6">
-          {/* Basic Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold flex items-center gap-2">
               <User className="h-5 w-5 text-blue-600" />
@@ -68,7 +67,6 @@ export function Profile() {
             </div>
           </div>
 
-          {/* Contact Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold flex items-center gap-2">
               <Mail className="h-5 w-5 text-blue-600" />
@@ -106,7 +104,7 @@ export function Profile() {
           </div>
 
           {/* Account Security */}
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <h3 className="text-lg font-semibold flex items-center gap-2">
               <Shield className="h-5 w-5 text-blue-600" />
               Account Security
@@ -131,10 +129,10 @@ export function Profile() {
                 <span className="text-sm text-gray-600">{mockUserDetails.lastPasswordChange}</span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Login History */}
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <h3 className="text-lg font-semibold">Recent Login Activity</h3>
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -156,7 +154,7 @@ export function Profile() {
                 </tbody>
               </table>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

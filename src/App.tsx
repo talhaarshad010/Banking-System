@@ -1,19 +1,28 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Layout } from './components/Layout';
-import { Login } from './pages/Login';
-import { Dashboard } from './pages/Dashboard';
-import { Profile } from './pages/Profile';
-import { UserManagement } from './pages/UserManagement';
-import { Transactions } from './pages/Transactions';
-import { TransferMoney } from './pages/TransferMoney';
-import { PayBills } from './pages/PayBills';
-import { useAuthStore } from './store/authStore';
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Layout } from "./components/Layout";
+import { Login } from "./pages/Login";
+import { Dashboard } from "./pages/Dashboard";
+import { Profile } from "./pages/Profile";
+import { UserManagement } from "./pages/UserManagement";
+import { Transactions } from "./pages/Transactions";
+import { TransferMoney } from "./pages/TransferMoney";
+import { PayBills } from "./pages/PayBills";
+import { useAuthStore } from "./store/authStore";
+import { AdminUsersPage } from "./pages/AdminUsersPage";
+import { AdminAccountsPage } from "./pages/AdminAccountsPage";
+import { AdminTransactionsPage } from "./pages/AdminTransactionsPage";
 
-function ProtectedRoute({ children, adminOnly = false }: { children: React.ReactNode, adminOnly?: boolean }) {
+function ProtectedRoute({
+  children,
+  adminOnly = false,
+}: {
+  children: React.ReactNode;
+  adminOnly?: boolean;
+}) {
   const { user } = useAuthStore();
   if (!user) return <Navigate to="/login" />;
-  if (adminOnly && user.role !== 'admin') return <Navigate to="/dashboard" />;
+  if (adminOnly && user.role !== "admin") return <Navigate to="/dashboard" />;
   return <>{children}</>;
 }
 
@@ -69,6 +78,30 @@ function App() {
             element={
               <ProtectedRoute>
                 <PayBills />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute>
+                <AdminUsersPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/accounts"
+            element={
+              <ProtectedRoute>
+                <AdminAccountsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/transactions"
+            element={
+              <ProtectedRoute>
+                <AdminTransactionsPage />
               </ProtectedRoute>
             }
           />

@@ -1,84 +1,78 @@
-import React, { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { Search, Edit, Trash2, UserPlus } from "lucide-react";
 
-export function UserManagement() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  role: "customer" | "admin";
+  status: "active" | "inactive";
+  joinDate: string;
+};
 
-  const [newUser, setNewUser] = useState({
+import { users as initialUsers } from "../utils/UserData";
+
+export function UserManagement() {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [users, setUsers] = useState<User[]>(initialUsers);
+
+  const [newUser, setNewUser] = useState<Omit<User, "id" | "joinDate">>({
     name: "",
     email: "",
-    role: "customer", // default role
-    status: "active", // default status
+    role: "customer",
+    status: "active",
   });
 
-  const mockUsers = [
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john@example.com",
-      role: "customer",
-      status: "active",
-      joinDate: "2024-01-15",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane@example.com",
-      role: "customer",
-      status: "active",
-      joinDate: "2024-02-01",
-    },
-    {
-      id: 3,
-      name: "Bob Wilson",
-      email: "bob@example.com",
-      role: "customer",
-      status: "inactive",
-      joinDate: "2024-02-15",
-    },
-  ];
-
-  const filteredUsers = mockUsers.filter(
+  const filteredUsers = users.filter(
     (user) =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleAddUser = () => {
+    setSelectedUser(null);
     setShowAddModal(true);
   };
 
-  const handleEditUser = (user) => {
+  const handleEditUser = (user: User) => {
     setSelectedUser(user);
+    setNewUser({ name: user.name, email: user.email, role: user.role, status: user.status });
     setShowEditModal(true);
   };
 
-  const handleDeleteUser = (userId) => {
+  const handleDeleteUser = (userId: number) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
-      // Handle delete logic here
-      console.log("Delete user:", userId);
+      setUsers(users.filter((u) => u.id !== userId));
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setNewUser({ ...newUser, [name]: value });
+    setNewUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // Add the new user to the mockUsers (this is just for demo purposes)
-    mockUsers.push({
-      ...newUser,
-      id: mockUsers.length + 1,
-      joinDate: new Date().toISOString().split("T")[0],
-    });
-    console.log("New user added:", newUser);
+    if (selectedUser) {
+      // Edit existing user
+      setUsers((prev) =>
+        prev.map((u) => (u.id === selectedUser.id ? { ...u, ...newUser } : u))
+      );
+    } else {
+      // Add new user
+      const newEntry: User = {
+        id: users.length + 1,
+        joinDate: new Date().toISOString().split("T")[0],
+        ...newUser,
+      };
+      setUsers((prev) => [...prev, newEntry]);
+    }
     setShowAddModal(false);
-    setNewUser({ name: "", email: "", role: "customer", status: "active" }); // Reset form
+    setShowEditModal(false);
+    setNewUser({ name: "", email: "", role: "customer", status: "active" });
   };
 
   return (
@@ -94,17 +88,13 @@ export function UserManagement() {
         </button>
       </div>
 
-      {/* Add User Modal */}
       {showAddModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg w-96">
             <h2 className="text-xl font-bold mb-4">Add New User</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                   Name
                 </label>
                 <input
@@ -119,10 +109,7 @@ export function UserManagement() {
               </div>
 
               <div className="mb-4">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Email
                 </label>
                 <input
@@ -137,10 +124,7 @@ export function UserManagement() {
               </div>
 
               <div className="mb-4">
-                <label
-                  htmlFor="role"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="role" className="block text-sm font-medium text-gray-700">
                   Role
                 </label>
                 <select
@@ -156,10 +140,7 @@ export function UserManagement() {
               </div>
 
               <div className="mb-4">
-                <label
-                  htmlFor="status"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="status" className="block text-sm font-medium text-gray-700">
                   Status
                 </label>
                 <select
@@ -237,9 +218,7 @@ export function UserManagement() {
                 <tr key={user.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap capitalize">
-                    {user.role}
-                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap capitalize">{user.role}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${
@@ -251,9 +230,7 @@ export function UserManagement() {
                       {user.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {user.joinDate}
-                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">{user.joinDate}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center space-x-3">
                       <button

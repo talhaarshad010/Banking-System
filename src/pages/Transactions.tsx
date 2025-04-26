@@ -1,39 +1,39 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { Search, Filter, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
-
+import { mockTransactions } from '../utils/userTransactions';
 export function Transactions() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
 
-  const mockTransactions = [
-    {
-      id: 1,
-      type: 'deposit',
-      amount: 1500.00,
-      description: 'Salary deposit',
-      date: '2024-03-15 09:30',
-      status: 'completed',
-      account: '**** 1234'
-    },
-    {
-      id: 2,
-      type: 'withdrawal',
-      amount: 500.00,
-      description: 'ATM withdrawal',
-      date: '2024-03-14 15:45',
-      status: 'completed',
-      account: '**** 1234'
-    },
-    {
-      id: 3,
-      type: 'transfer',
-      amount: 750.00,
-      description: 'Transfer to savings',
-      date: '2024-03-13 11:20',
-      status: 'completed',
-      account: '**** 5678'
-    }
-  ];
+  // const mockTransactions = [
+  //   {
+  //     id: 1,
+  //     type: 'deposit',
+  //     amount: 1500.00,
+  //     description: 'Salary deposit',
+  //     date: '2024-03-15 09:30',
+  //     status: 'completed',
+  //     account: '**** 1234'
+  //   },
+  //   {
+  //     id: 2,
+  //     type: 'withdrawal',
+  //     amount: 500.00,
+  //     description: 'ATM withdrawal',
+  //     date: '2024-03-14 15:45',
+  //     status: 'completed',
+  //     account: '**** 1234'
+  //   },
+  //   {
+  //     id: 3,
+  //     type: 'transfer',
+  //     amount: 750.00,
+  //     description: 'Transfer to savings',
+  //     date: '2024-03-13 11:20',
+  //     status: 'completed',
+  //     account: '**** 5678'
+  //   }
+  // ];
 
   const filteredTransactions = mockTransactions.filter(transaction =>
     (filterType === 'all' || transaction.type === filterType) &&
