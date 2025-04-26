@@ -37,7 +37,6 @@ export function TransferMoney() {
       return;
     }
 
-    // Mock successful transfer
     setSuccess('Transfer completed successfully');
     setAmount('');
     setDescription('');

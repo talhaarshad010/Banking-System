@@ -51,7 +51,6 @@ export function PayBills() {
       return;
     }
 
-    // Mock successful payment
     setSuccess('Bill payment completed successfully');
     setAmount('');
     setSelectedBill('');
